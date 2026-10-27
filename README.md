@@ -19,7 +19,7 @@ The massage menu includes relaxation/Swedish, deep tissue, aromatherapy oil, hot
 
 Sauna enquiries cover a standard session and allow customers to ask about private use, combining sauna with massage, and whether dry-sauna or steam options are available. Do not treat an enquiry as confirmation that every option is available.
 
-The booking form creates a message the visitor can review and copy. WhatsApp sending remains disabled until the business's verified number is added in `site-config.js`. The form does not store information, take payment or confirm bookings.
+The booking form validates the enquiry, builds a formatted message and opens the visitor's configured email app addressed to `ssegirinyapius07@gmail.com`. The visitor must review the draft and press Send; the site does not send email in the background. A copy-message fallback is available if an email app does not open. WhatsApp remains hidden until the business's verified number is added in `site-config.js`. The form does not store information, take payment or confirm bookings.
 
 ## Before public launch
-Replace illustrative images with genuine, approved photos of the actual premises when available. Confirm the business's contact details, service list, prices, opening hours, room arrangements and what each massage name means before publishing firm promises. No database or online payment system is currently implemented.
+Replace illustrative images with genuine, approved photos of the actual premises when available. Confirm the contact details, service list, prices, opening hours, room arrangements and what each massage name means before publishing firm promises. Verify that the configured enquiry email is the right address for the business. No database or online payment system is currently implemented.
