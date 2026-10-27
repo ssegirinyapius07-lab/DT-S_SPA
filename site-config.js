@@ -6,6 +6,6 @@ window.DTS_SITE_CONFIG = {
   whatsappNumber: "",
   phoneDisplay: "",
   phoneHref: "",
-  email: "",
+  email: "ssegirinyapius07@gmail.com",
   address: "Kampala, Uganda"
 };
