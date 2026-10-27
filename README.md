@@ -8,7 +8,7 @@ A responsive static website for a local sauna, massage, gym and rooms business. 
 - `rooms.html` — room enquiry information.
 - `about us.html` — about the spa.
 - `contact us.html` — contact information and directions.
-- `gallery.html` — illustrative spa, sauna, massage, gym and room images alongside retained project media.
+- `gallery.html` — illustrative sauna, massage, gym and room images. Older project images, audio and video are archived in `examples.html`.
 - `examples.html` — preserved HTML tables, lists, text elements and demonstration form from the earlier project.
 
 ## Run locally
