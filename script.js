@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
       element.textContent = config.phoneDisplay;
       if (element.tagName === "A") element.href = "tel:" + config.phoneHref;
     } else {
-      element.textContent = "Official phone number to be added";
+      element.textContent = "Contact number to be confirmed";
       if (element.tagName === "A") {
         element.removeAttribute("href");
         element.classList.add("contact-unconfigured");
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       element.textContent = config.email;
       if (element.tagName === "A") element.href = "mailto:" + config.email;
     } else {
-      element.textContent = "Official email to be added";
+      element.textContent = "Email to be confirmed";
       if (element.tagName === "A") {
         element.removeAttribute("href");
         element.classList.add("contact-unconfigured");
