@@ -1,0 +1,38 @@
+name: Add spa photo assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/add-spa-photo-assets.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  download-photos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+      - name: Download photo assets
+        run: |
+          mkdir -p images
+          curl --fail --location --retry 3 -A "Mozilla/5.0" "https://images.pexels.com/photos/7587466/pexels-photo-7587466.jpeg?auto=compress&cs=tinysrgb&w=1600" --output images/sauna.jpg
+          curl --fail --location --retry 3 -A "Mozilla/5.0" "https://images.pexels.com/photos/5794023/pexels-photo-5794023.jpeg?auto=compress&cs=tinysrgb&w=1200" --output images/massage.jpg
+          curl --fail --location --retry 3 -A "Mozilla/5.0" "https://images.pexels.com/photos/29149073/pexels-photo-29149073.jpeg?auto=compress&cs=tinysrgb&w=1200" --output images/gym.jpg
+          curl --fail --location --retry 3 -A "Mozilla/5.0" "https://images.pexels.com/photos/6186829/pexels-photo-6186829.jpeg?auto=compress&cs=tinysrgb&w=1200" --output images/rooms.jpg
+          curl --fail --location --retry 3 -A "Mozilla/5.0" "https://images.pexels.com/photos/7789646/pexels-photo-7789646.jpeg?auto=compress&cs=tinysrgb&w=1200" --output images/spa-detail.jpg
+          file images/*
+          test -s images/sauna.jpg
+          test -s images/massage.jpg
+          test -s images/gym.jpg
+          test -s images/rooms.jpg
+          test -s images/spa-detail.jpg
+      - name: Commit downloaded images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/
+          git commit -m "Add sauna, massage, gym and room photos"
+          git push origin HEAD:main
