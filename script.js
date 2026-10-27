@@ -57,10 +57,57 @@ document.addEventListener("DOMContentLoaded", function () {
     dateInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   }
 
+  const serviceField = document.querySelector("#guest-service");
+  const massageWrap = document.querySelector("#massage-type-wrap");
+  const saunaWrap = document.querySelector("#sauna-option-wrap");
+  const massageField = document.querySelector("#guest-massage-type");
+  const saunaField = document.querySelector("#guest-sauna-option");
+
+  function updateServiceOptions() {
+    const service = serviceField ? serviceField.value : "";
+    if (massageWrap) massageWrap.hidden = service !== "Massage";
+    if (saunaWrap) saunaWrap.hidden = service !== "Sauna";
+  }
+
+  if (serviceField) {
+    serviceField.addEventListener("change", updateServiceOptions);
+    const params = new URLSearchParams(window.location.search);
+    const requestedService = params.get("service");
+    const hasService = Array.from(serviceField.options).some(function (option) {
+      return option.value === requestedService;
+    });
+    if (requestedService && hasService) serviceField.value = requestedService;
+
+    const requestedMassage = params.get("massage");
+    if (massageField && requestedMassage) {
+      const hasMassage = Array.from(massageField.options).some(function (option) {
+        return option.value === requestedMassage || option.textContent === requestedMassage;
+      });
+      if (hasMassage) {
+        massageField.value = requestedMassage;
+        if (!requestedService) serviceField.value = "Massage";
+      }
+    }
+
+    const requestedSauna = params.get("sauna");
+    if (saunaField && requestedSauna) {
+      const hasSauna = Array.from(saunaField.options).some(function (option) {
+        return option.value === requestedSauna || option.textContent === requestedSauna;
+      });
+      if (hasSauna) {
+        saunaField.value = requestedSauna;
+        if (!requestedService) serviceField.value = "Sauna";
+      }
+    }
+    updateServiceOptions();
+  }
+
   document.querySelectorAll("[data-service]").forEach(function (link) {
     link.addEventListener("click", function () {
-      const field = document.querySelector("#guest-service");
-      if (field) field.value = link.getAttribute("data-service") || "";
+      if (serviceField) serviceField.value = link.getAttribute("data-service") || "";
+      if (massageField && link.hasAttribute("data-massage-type")) massageField.value = link.getAttribute("data-massage-type") || "";
+      if (saunaField && link.hasAttribute("data-sauna-option")) saunaField.value = link.getAttribute("data-sauna-option") || "";
+      updateServiceOptions();
     });
   });
 
@@ -79,6 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const name = String(data.get("name") || "").trim();
       const phone = String(data.get("phone") || "").trim();
       const service = String(data.get("service") || "").trim();
+      const massageType = String(data.get("massageType") || "").trim();
+      const saunaOption = String(data.get("saunaOption") || "").trim();
       const date = String(data.get("date") || "").trim();
       const time = String(data.get("time") || "").trim();
       const note = String(data.get("note") || "").trim();
@@ -87,7 +136,11 @@ document.addEventListener("DOMContentLoaded", function () {
         "",
         "Name: " + name,
         "My phone: " + phone,
-        "Service: " + service,
+        "Service: " + service
+      ];
+      if (service === "Massage" && massageType) lines.push("Massage type: " + massageType);
+      if (service === "Sauna" && saunaOption) lines.push("Sauna option: " + saunaOption);
+      lines.push(
         "Preferred date: " + (date || "Flexible"),
         "Preferred time: " + (time || "Flexible")
       ];
