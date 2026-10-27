@@ -1,21 +1,42 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", function () {
   const config = window.DTS_SITE_CONFIG || {};
+  const enquiryEmail = String(config.email || "ssegirinyapius07@gmail.com").trim();
+  const header = document.querySelector(".site-header");
   const menuButton = document.querySelector(".menu-toggle");
   const nav = document.querySelector(".primary-nav");
 
+  function setMenuOpen(isOpen) {
+    if (!menuButton || !nav) return;
+    nav.classList.toggle("is-open", isOpen);
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+  }
+
   if (menuButton && nav) {
-    menuButton.addEventListener("click", function () {
-      const isOpen = nav.classList.toggle("is-open");
-      menuButton.setAttribute("aria-expanded", String(isOpen));
-      menuButton.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    menuButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
     });
+
     nav.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        nav.classList.remove("is-open");
-        menuButton.setAttribute("aria-expanded", "false");
-        menuButton.setAttribute("aria-label", "Open navigation");
+        setMenuOpen(false);
       });
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") setMenuOpen(false);
+    });
+
+    document.addEventListener("click", function (event) {
+      if (nav.classList.contains("is-open") && header && !header.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 850) setMenuOpen(false);
     });
   }
 
@@ -26,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-contact-address]").forEach(function (element) {
     element.textContent = config.address || "Kampala, Uganda";
   });
+
   document.querySelectorAll("[data-contact-phone]").forEach(function (element) {
     if (config.phoneDisplay && config.phoneHref) {
       element.textContent = config.phoneDisplay;
@@ -38,10 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
   document.querySelectorAll("[data-contact-email]").forEach(function (element) {
-    if (config.email) {
-      element.textContent = config.email;
-      if (element.tagName === "A") element.href = "mailto:" + config.email;
+    if (enquiryEmail) {
+      element.textContent = enquiryEmail;
+      if (element.tagName === "A") element.href = "mailto:" + enquiryEmail;
     } else {
       element.textContent = "Email to be confirmed";
       if (element.tagName === "A") {
@@ -80,22 +103,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const requestedMassage = params.get("massage");
     if (massageField && requestedMassage) {
-      const hasMassage = Array.from(massageField.options).some(function (option) {
+      const matchingMassage = Array.from(massageField.options).find(function (option) {
         return option.value === requestedMassage || option.textContent === requestedMassage;
       });
-      if (hasMassage) {
-        massageField.value = requestedMassage;
+      if (matchingMassage) {
+        massageField.value = matchingMassage.value;
         if (!requestedService) serviceField.value = "Massage";
       }
     }
 
     const requestedSauna = params.get("sauna");
     if (saunaField && requestedSauna) {
-      const hasSauna = Array.from(saunaField.options).some(function (option) {
+      const matchingSauna = Array.from(saunaField.options).find(function (option) {
         return option.value === requestedSauna || option.textContent === requestedSauna;
       });
-      if (hasSauna) {
-        saunaField.value = requestedSauna;
+      if (matchingSauna) {
+        saunaField.value = matchingSauna.value;
         if (!requestedService) serviceField.value = "Sauna";
       }
     }
@@ -105,8 +128,12 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-service]").forEach(function (link) {
     link.addEventListener("click", function () {
       if (serviceField) serviceField.value = link.getAttribute("data-service") || "";
-      if (massageField && link.hasAttribute("data-massage-type")) massageField.value = link.getAttribute("data-massage-type") || "";
-      if (saunaField && link.hasAttribute("data-sauna-option")) saunaField.value = link.getAttribute("data-sauna-option") || "";
+      if (massageField && link.hasAttribute("data-massage-type")) {
+        massageField.value = link.getAttribute("data-massage-type") || "";
+      }
+      if (saunaField && link.hasAttribute("data-sauna-option")) {
+        saunaField.value = link.getAttribute("data-sauna-option") || "";
+      }
       updateServiceOptions();
     });
   });
@@ -114,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector("#booking-form");
   const preview = document.querySelector("#booking-preview");
   const requestMessage = document.querySelector("#request-message");
+  const sendEmail = document.querySelector("#send-email");
   const sendWhatsApp = document.querySelector("#send-whatsapp");
   const status = document.querySelector("#form-status");
 
@@ -131,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const date = String(data.get("date") || "").trim();
       const time = String(data.get("time") || "").trim();
       const note = String(data.get("note") || "").trim();
+
       const lines = [
         "Hello DT-S Spa, I would like to enquire about a visit.",
         "",
@@ -138,36 +167,51 @@ document.addEventListener("DOMContentLoaded", function () {
         "My phone: " + phone,
         "Service: " + service
       ];
+
       if (service === "Massage" && massageType) lines.push("Massage type: " + massageType);
       if (service === "Sauna" && saunaOption) lines.push("Sauna option: " + saunaOption);
       lines.push(
         "Preferred date: " + (date || "Flexible"),
         "Preferred time: " + (time || "Flexible")
-      ];
+      );
       if (note) lines.push("Questions / details: " + note);
       lines.push("", "Please confirm availability and the current price. Thank you.");
 
       const message = lines.join("\n");
+      const subject = "DT-S Spa enquiry - " + (service || "Visit");
+      const mailtoUrl = "mailto:" + enquiryEmail + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(message);
+
       requestMessage.value = message;
       preview.hidden = false;
 
+      if (sendEmail) {
+        sendEmail.href = mailtoUrl;
+        sendEmail.hidden = false;
+      }
+
       const destination = String(config.whatsappNumber || "").replace(/\D/g, "");
-      if (destination) {
+      if (sendWhatsApp && destination) {
         sendWhatsApp.href = "https://wa.me/" + destination + "?text=" + encodeURIComponent(message);
         sendWhatsApp.hidden = false;
-        if (status) status.textContent = "Your message is ready. Check the details below, then continue to WhatsApp and press Send.";
-      } else {
+      } else if (sendWhatsApp) {
         sendWhatsApp.hidden = true;
-        if (status) status.textContent = "Your message is ready to copy. The official WhatsApp number has not been configured yet, so no message has been sent.";
       }
-      preview.scrollIntoView({behavior:"smooth", block:"nearest"});
+
+      if (status) {
+        status.textContent = "Your email draft is ready and addressed to " + enquiryEmail + ". Press Send in your email app to submit it. If the app does not open, use the email button or copy the message below.";
+      }
+
+      preview.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+      // A mailto link opens the visitor's email app; the visitor still presses Send.
+      window.location.href = mailtoUrl;
     });
   }
 
   const copyButton = document.querySelector("#copy-request");
   if (copyButton && requestMessage) {
     copyButton.addEventListener("click", async function () {
-      const status = document.querySelector("#form-status");
+      const currentStatus = document.querySelector("#form-status");
       try {
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(requestMessage.value);
@@ -177,11 +221,11 @@ document.addEventListener("DOMContentLoaded", function () {
           const copied = document.execCommand("copy");
           if (!copied) throw new Error("Copy is not available in this browser");
         }
-        if (status) status.textContent = "Enquiry copied. You can paste it into a message to the spa.";
+        if (currentStatus) currentStatus.textContent = "Enquiry copied. You can paste it into an email or message.";
       } catch (error) {
         requestMessage.focus();
         requestMessage.select();
-        if (status) status.textContent = "Select the message above and copy it manually.";
+        if (currentStatus) currentStatus.textContent = "Select the message above and copy it manually.";
       }
     });
   }
