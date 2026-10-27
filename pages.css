@@ -22,3 +22,6 @@
 .booking-form [hidden]{display:none!important}
 @media(max-width:900px){.massage-menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sauna-options-panel{grid-template-columns:1fr}}
 @media(max-width:520px){.massage-menu-section{padding:52px 0}.massage-menu-grid{grid-template-columns:1fr}.massage-option{min-height:0;padding:20px}.massage-option-number{margin-bottom:13px}.sauna-options-panel{padding:19px}.sauna-option-list{grid-template-columns:1fr}}
+
+/* Keep service details in a clear reading order, including the sauna options panel. */
+.service-detail-list{grid-template-columns:1fr}
