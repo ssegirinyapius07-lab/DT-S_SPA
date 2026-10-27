@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Extra HTML Examples | DT-S Spa & Wellness</title>
+  <link rel="stylesheet" href="font.css"><script src="script.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="container nav-wrap">
+  <a class="brand" href="index.html"><span class="brand-mark">DT<span>•</span>S</span><span class="brand-copy"><strong>SPA & WELLNESS</strong><small>KAMPALA, UGANDA</small></span></a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span><span></span></button>
+  <nav class="primary-nav" id="primary-nav" aria-label="Main navigation"><a href="index.html#treatments">Treatments</a><a href="about%20us.html">Our spa</a><a href="gallery.html">Gallery</a><a href="contact%20us.html">Contact</a><a class="button button-small button-dark nav-book" href="index.html#booking">Book a visit <span aria-hidden="true">↗</span></a></nav>
+</div></header>
+<main id="main">
+  <section class="page-hero"><div class="container"><p class="eyebrow"><span class="eyebrow-line"></span> PRESERVED CONTENT</p><h1>HTML examples & <em>extra content.</em></h1><p>This page keeps the tables, lists, text demonstrations and form controls from the original homepage so the existing work is not lost or mixed into the customer-facing sections.</p></div></section>
+  <section class="content-section"><div class="container">
+    <h2>Original business text</h2>
+    <p>“Emma's Palace of Happiness.” The original homepage described an affordable place offering customer service in Kampala and around Kampala.</p>
+    <p>Service wording and the business name should be confirmed and edited to match the actual spa before the website is published publicly.</p>
+    <h2>Service and amount table</h2>
+    <table class="examples-table"><thead><tr><th>Business</th><th>Location</th><th>Major option</th><th>Amounts</th></tr></thead><tbody><tr><td>Emma's Palace</td><td>Kampala</td><td>Bed and Breakfast</td><td>Confirm with the business</td></tr></tbody></table>
+    <h2>Numbered table example</h2>
+    <table class="examples-table"><tbody><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td colspan="2">6</td><td colspan="3">7</td></tr><tr><td>8</td><td>9</td><td rowspan="2" colspan="2">10</td><td>11</td></tr><tr><td>12</td><td>13</td><td>14</td></tr></tbody></table>
+    <h2>Customer preference table</h2>
+    <table class="examples-table"><thead><tr><th>Name</th><th>Mark 1</th><th>Mark 2</th><th>Mark 3</th></tr></thead><tbody><tr><td>Jane</td><td>75</td><td rowspan="3">90</td><td>80</td></tr><tr><td>John</td><td>65</td><td>72</td></tr><tr><td>Jackie</td><td>62</td><td>61</td></tr><tr><td>Joan</td><td colspan="2">71</td><td>57</td></tr></tbody></table>
+    <h2>Lists and text demonstrations</h2>
+    <div class="content-grid"><div class="content-card"><h3>Square-bullet list</h3><ul><li>Water</li><li>Beer</li><li>Soda</li><li>Juice</li></ul></div><div class="content-card"><h3>Alphabetical list</h3><ol type="a"><li>Matooke</li><li>Rice</li><li>Meat</li><li>Beans</li></ol></div></div>
+    <div class="content-card" style="margin-top:24px"><h3>Text and HTML element examples</h3><p><bdo dir="rtl">This is a sample of text direction.</bdo></p><p><abbr title="HyperText Markup Language">HTML</abbr> means HyperText Markup Language.</p><p>The <dfn>special</dfn> word is marked as a definition.</p><p><strong>Strong text</strong>, larger text and <u>underlined text</u> are also demonstrated.</p></div>
+    <h2 style="margin-top:38px">Original form controls</h2><p class="fine-print">This demonstration is not connected to a database and does not submit or store the entered details.</p>
+    <form class="example-form" onsubmit="event.preventDefault();document.getElementById('example-status').textContent='Demo only: no details were sent or saved.';">
+      <label>Name<input type="text" name="demo-name" placeholder="Enter a name"></label><label>Username<input type="text" name="demo-username" placeholder="Enter a username"></label>
+      <label>Password example<input type="password" name="demo-password" autocomplete="off" placeholder="Demo field only"></label>
+      <label class="wide">Description<textarea rows="4" name="demo-description" placeholder="Type your details here..."></textarea></label>
+      <div class="wide"><span class="fine-print">Course options</span><div class="check-group"><label><input type="checkbox" name="bait" value="BAIT"> BAIT</label><label><input type="checkbox" name="basc" value="BASC"> BASC</label></div></div>
+      <div class="wide"><span class="fine-print">Choose one example</span><div class="check-group"><label><input type="radio" name="course" value="BAIT"> BAIT</label><label><input type="radio" name="course" value="BASC"> BASC</label></div></div>
+      <label>How did you hear about us?<select name="source"><option>Newspapers</option><option selected>Friend</option><option>Others</option></select></label>
+      <label>Choose an image file<input type="file" name="fileupload" accept="image/*"></label>
+      <div class="wide"><button class="button button-dark" type="submit">Test demo form</button> <button class="button button-outline" type="reset">Reset fields</button><p id="example-status" class="fine-print" role="status"></p></div>
+    </form>
+    <div class="notice-box">The automatic page refresh from the original source is not enabled because it interrupts reading. The original image, audio and video assets remain available in the Gallery.</div>
+    <div class="page-nav"><a class="button button-outline" href="index.html">Return home <span aria-hidden="true">↗</span></a><a class="button button-dark" href="gallery.html">View retained media <span aria-hidden="true">↗</span></a></div>
+  </div></section>
+</main>
+<footer class="site-footer"><div class="container footer-main"><a class="brand brand-footer" href="index.html"><span class="brand-mark">DT<span>•</span>S</span><span class="brand-copy"><strong>SPA & WELLNESS</strong><small>KAMPALA, UGANDA</small></span></a><p>A moment of care, set aside for you.</p><nav aria-label="Footer navigation"><a href="about%20us.html">About</a><a href="gallery.html">Gallery</a><a href="contact%20us.html">Contact</a><a href="examples.html">Extra HTML examples</a></nav></div><div class="container footer-bottom"><span>© <span data-current-year>2026</span> DT-S Spa & Wellness</span><span>Preserved learning examples</span></div></footer>
+</body>
+</html>
