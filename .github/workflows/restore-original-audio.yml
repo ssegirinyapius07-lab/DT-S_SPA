@@ -1,0 +1,28 @@
+name: Restore original audio asset
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/restore-original-audio.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  restore-audio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+      - name: Download retained audio asset
+        run: |
+          curl --fail --location --retry 3 --output tommy.mp3 "https://raw.githubusercontent.com/emmanuelolanya2002-boop/emmy/main/tommy.mp3"
+          test -s tommy.mp3
+      - name: Commit the asset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tommy.mp3
+          git commit -m "Add retained original MP3 asset"
+          git push origin HEAD:main
